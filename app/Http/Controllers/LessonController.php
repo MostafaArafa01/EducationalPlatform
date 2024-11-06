@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Jobs\UpdateEnrollmentProgressForAllEnrollments;
 use App\Models\Lesson;
 use App\Http\Requests\StoreLessonRequest;
 use App\Http\Requests\UpdateLessonRequest;
@@ -29,10 +30,12 @@ class LessonController extends Controller
     public function store(StoreLessonRequest $request)
     {
         try{
-            return Lesson::create([
+            $lesson = Lesson::create([
                 'title' => $request->title,
                 'course_id' => $request->course_id,
             ]);
+            UpdateEnrollmentProgressForAllEnrollments::dispatch($lesson);
+            return $lesson;
         }
         catch(Exception $e){
             return $e->getMessage();
@@ -77,6 +80,7 @@ class LessonController extends Controller
         try{
             Gate::authorize('delete',$lesson);
             $lesson->delete();
+            UpdateEnrollmentProgressForAllEnrollments::dispatch($lesson);
         }
         catch(Exception $e){
             return $e->getMessage();
