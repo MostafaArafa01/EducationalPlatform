@@ -6,6 +6,7 @@ use App\Models\Lesson;
 use App\Http\Requests\StoreLessonRequest;
 use App\Http\Requests\UpdateLessonRequest;
 use Illuminate\Support\Facades\Gate;
+use Exception;
 
 class LessonController extends Controller
 {
@@ -14,7 +15,12 @@ class LessonController extends Controller
      */
     public function index()
     {
-        return Lesson::paginate(10);
+        try{
+            return Lesson::paginate(10);
+        }
+        catch(Exception $e){
+            return $e->getMessage();
+        }
     }
 
     /**
@@ -22,10 +28,15 @@ class LessonController extends Controller
      */
     public function store(StoreLessonRequest $request)
     {
-        return Lesson::create([
-            'title' => $request->title,
-            'course_id' => $request->course_id,
-        ]);
+        try{
+            return Lesson::create([
+                'title' => $request->title,
+                'course_id' => $request->course_id,
+            ]);
+        }
+        catch(Exception $e){
+            return $e->getMessage();
+        }
     }
 
     /**
@@ -33,8 +44,13 @@ class LessonController extends Controller
      */
     public function show(Lesson $lesson)
     {
-        Gate::authorize('view',$lesson);
-        return $lesson;
+        try{
+            Gate::authorize('view',$lesson);
+            return $lesson;
+        }
+        catch(Exception $e){
+            return $e->getMessage();
+        }
     }
 
     /**
@@ -42,10 +58,15 @@ class LessonController extends Controller
      */
     public function update(UpdateLessonRequest $request, Lesson $lesson)
     {
-        $lesson->update([
-            'title' => $request->title,
-            'course_id' => $request->course_id,
-        ]);
+        try{
+            $lesson->update([
+                'title' => $request->title,
+                'course_id' => $request->course_id,
+            ]);
+        }
+        catch(Exception $e){
+            return $e->getMessage();
+        }
     }
 
     /**
@@ -53,7 +74,12 @@ class LessonController extends Controller
      */
     public function destroy(Lesson $lesson)
     {
-        Gate::authorize('delete',$lesson);
-        $lesson->delete();
+        try{
+            Gate::authorize('delete',$lesson);
+            $lesson->delete();
+        }
+        catch(Exception $e){
+            return $e->getMessage();
+        }
     }
 }

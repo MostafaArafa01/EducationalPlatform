@@ -6,6 +6,7 @@ use App\Models\Enrollment;
 use App\Http\Requests\StoreEnrollmentRequest;
 use App\Http\Requests\UpdateEnrollmentRequest;
 use Illuminate\Support\Facades\Gate;
+use Exception   ;
 
 class EnrollmentController extends Controller
 {
@@ -14,7 +15,12 @@ class EnrollmentController extends Controller
      */
     public function index()
     {
-        return Enrollment::paginate(10);
+        try{
+            return Enrollment::paginate(10);
+        }
+        catch(Exception $e){
+            return $e->getMessage();
+        }
     }
 
     /**
@@ -22,10 +28,15 @@ class EnrollmentController extends Controller
      */
     public function store(StoreEnrollmentRequest $request)
     {
-        return Enrollment::create([
-            'user_id' => Auth()->user()->id,
-            'course_id' => $request->course_id,
-        ]);
+        try{
+            return Enrollment::create([
+                'user_id' => Auth()->user()->id,
+                'course_id' => $request->course_id,
+            ]);
+        }
+        catch(Exception $e){
+            return $e->getMessage();
+        }
     }
 
     /**
@@ -33,8 +44,13 @@ class EnrollmentController extends Controller
      */
     public function show(Enrollment $enrollment)
     {
-        Gate::authorize('view',$enrollment);
-        return $enrollment;
+        try{
+            Gate::authorize('view',$enrollment);
+            return $enrollment;
+        }
+        catch(Exception $e){
+            return $e->getMessage();
+        }
     }
 
     /**
@@ -42,7 +58,12 @@ class EnrollmentController extends Controller
      */
     public function update(UpdateEnrollmentRequest $request, Enrollment $enrollment)
     {
-        $enrollment->update($request->validated());
+        try{
+            $enrollment->update($request->validated());
+        }
+        catch(Exception $e){
+            return $e->getMessage();
+        }
     }
 
     /**
@@ -50,7 +71,12 @@ class EnrollmentController extends Controller
      */
     public function destroy(Enrollment $enrollment)
     {
-        Gate::authorize('delete',$enrollment);
-        $enrollment->delete();
+        try{
+            Gate::authorize('delete',$enrollment);
+            $enrollment->delete();
+        }
+        catch(Exception $e){
+            return $e->getMessage();
+        }
     }
 }

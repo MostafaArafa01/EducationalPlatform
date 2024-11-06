@@ -6,6 +6,7 @@ use App\Models\Course;
 use App\Http\Requests\StoreCourseRequest;
 use App\Http\Requests\UpdateCourseRequest;
 use Illuminate\Support\Facades\Gate;
+use Exception;
 
 class CourseController extends Controller
 {
@@ -22,10 +23,15 @@ class CourseController extends Controller
      */
     public function store(StoreCourseRequest $request)
     {
-        return Course::create([
-            'title' => $request->title,
-            'instructor_id' => Auth()->user()->id,
-        ]);
+        try{
+            return Course::create([
+                'title' => $request->title,
+                'instructor_id' => Auth()->user()->id,
+            ]);
+        }
+        catch(Exception $e){
+            return $e->getMessage();
+        }
     }
 
     /**
@@ -33,8 +39,13 @@ class CourseController extends Controller
      */
     public function show(Course $course)
     {
-        Gate::authorize('view',$course);
-        return $course;
+        try{
+            Gate::authorize('view',$course);
+            return $course;
+        }
+        catch(Exception $e){
+            return $e->getMessage();
+        }
     }
 
     /**
@@ -42,7 +53,12 @@ class CourseController extends Controller
      */
     public function update(UpdateCourseRequest $request, Course $course)
     {
-        $course->update($request->validated());
+        try{
+            $course->update($request->validated());
+        }
+        catch(Exception $e){
+            return $e->getMessage();
+        }
     }
 
     /**
@@ -50,7 +66,12 @@ class CourseController extends Controller
      */
     public function destroy(Course $course)
     {
-        Gate::authorize('delete',$course);
-        $course->delete();
+        try{
+            Gate::authorize('delete',$course);
+            $course->delete();
+        }
+        catch(Exception $e){
+            return $e->getMessage();
+        }
     }
 }

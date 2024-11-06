@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\FilterRequest;
 use App\Models\Course;
 use Illuminate\Http\Request;
+use Exception;
 
 class FilterCoursesController extends Controller
 {
@@ -13,6 +14,11 @@ class FilterCoursesController extends Controller
      */
     public function __invoke(FilterRequest $request)
     {
-        return Course::where('title','LIKE','%'.$request->keyword.'%')->get();
+        try{
+            return Course::where('title','LIKE','%'.$request->keyword.'%')->get();
+        }
+        catch(Exception $e){
+            return $e->getMessage();
+        }
     }
 }
