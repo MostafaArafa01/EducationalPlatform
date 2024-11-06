@@ -23,7 +23,7 @@ class UpdateCourseRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'title' => 'unique:courses',
+            'title' => 'unique:courses,title,'.$this->course->id.'|required',
         ];
     }
 }

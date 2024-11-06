@@ -54,7 +54,7 @@ class User extends Authenticatable
     }
 
     // Relationship for students (many-to-many)
-    public function enrolledCourses(){
-        return $this->belongsToMany(Course::class, 'course_user', 'user_id', 'course_id');
+    public function enrollments(){
+        return $this->hasMany(Enrollment::class);
     }
 }

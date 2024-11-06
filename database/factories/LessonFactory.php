@@ -21,7 +21,6 @@ class LessonFactory extends Factory
         return [
             'title' => $this->faker->sentence(),
             'course_id' => $courses->random(),
-            'status' => $this->faker->randomElement(['finished', 'not finished']),
         ];
     }
 }

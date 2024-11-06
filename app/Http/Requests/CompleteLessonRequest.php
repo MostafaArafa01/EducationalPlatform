@@ -2,19 +2,17 @@
 
 namespace App\Http\Requests;
 
-use App\Models\Course;
+use App\Models\Enrollment;
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Support\Facades\Gate;
-use Illuminate\Validation\Rule;
 
-class UpdateLessonRequest extends FormRequest
+class CompleteLessonRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
      */
     public function authorize(): bool
     {
-        return Gate::authorize('update', $this->lesson) ? true : false;
+        return Enrollment::find($this->enrollment_id)->exists();
     }
 
     /**
@@ -25,10 +23,8 @@ class UpdateLessonRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'course_id' =>[
-                Rule::unique('lessons','course_id')->where('title',$this->title)->ignore($this->lesson->id)
-            ],
-            'title' => 'required',
+            'enrollment_id' => 'required|exists:enrollments,id',
+            'lesson_id' => 'required|exists:lessons,id',
         ];
     }
 }

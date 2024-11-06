@@ -25,7 +25,6 @@ class LessonController extends Controller
         return Lesson::create([
             'title' => $request->title,
             'course_id' => $request->course_id,
-            'status' => $request->status,
         ]);
     }
 
@@ -46,7 +45,6 @@ class LessonController extends Controller
         $lesson->update([
             'title' => $request->title,
             'course_id' => $request->course_id,
-            'status' => $request->status,
         ]);
     }
 

@@ -31,7 +31,6 @@ class StoreLessonRequest extends FormRequest
             'course_id' =>[
                 Rule::unique('lessons','course_id')->where('title',$this->title)
             ],
-            'status' => 'required|in:finished,not finished',
             'title' => 'required',
         ];
     }

@@ -13,10 +13,13 @@ class Lesson extends Model
     protected $fillable =[
         'title',
         'course_id',
-        'status'
     ];
 
     public function course(){
         return $this->belongsTo(Course::class);
+    }
+
+    public function enrollments(){
+        return $this->belongsToMany(Enrollment::class);
     }
 }
