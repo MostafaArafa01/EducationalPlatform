@@ -14,7 +14,7 @@ class EnrollmentController extends Controller
      */
     public function index()
     {
-        return Enrollment::all();
+        return Enrollment::paginate(10);
     }
 
     /**

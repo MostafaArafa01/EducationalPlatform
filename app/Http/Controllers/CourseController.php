@@ -14,7 +14,7 @@ class CourseController extends Controller
      */
     public function index()
     {
-        return Course::where('instructor_id',Auth()->user()->id)->get();
+        return Course::paginate(10);
     }
 
     /**
