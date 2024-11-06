@@ -3,10 +3,13 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\UserRequest;
+use App\Http\Requests\StoreUserRequest;
+use App\Http\Requests\UpdateUserRequest;
 use App\Models\User;
 use Exception;
 use App\Services\StoreUserService;
+use App\Services\UpdateUserService;
+use Illuminate\Support\Facades\Gate;
 
 class UserController extends Controller
 {
@@ -26,7 +29,7 @@ class UserController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(UserRequest $request, StoreUserService $storeUserService)
+    public function store(StoreUserRequest $request, StoreUserService $storeUserService)
     {
         try{
             return $storeUserService->execute($request);
@@ -52,10 +55,10 @@ class UserController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UserRequest $request, User $user)
+    public function update(UpdateUserRequest $request, User $user, UpdateUserService $updateUserService)
     {
         try{
-            $user->update($request->validated());
+            return $updateUserService->execute($request,$user);
         }
         catch(Exception $e){
             return $e->getMessage();
@@ -68,6 +71,7 @@ class UserController extends Controller
     public function destroy(User $user)
     {
         try{
+            Gate::authorize('delete',$user);
             $user->delete();
         }
         catch(Exception $e){

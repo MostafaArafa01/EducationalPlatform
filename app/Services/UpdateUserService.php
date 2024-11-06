@@ -3,19 +3,19 @@
 
 namespace App\Services;
 
-use App\Http\Requests\StoreUserRequest;
+use App\Http\Requests\UpdateUserRequest;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use Spatie\Permission\Models\Role;
-class StoreUserService{
-    public function execute(StoreUserRequest $request){
-        $user = User::create([
+class UpdateUserService{
+    public function execute(UpdateUserRequest $request,User $user){
+        $user->update([
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
         ]);
         $role = Role::where('name',$request->role)->first();
-        $user->assignRole($role);
-        return 'User created successfully';
+        $user->syncRoles($role);
+        return 'User updated successfully';
     }
 }
