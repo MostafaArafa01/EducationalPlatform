@@ -7,7 +7,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
-class NewEnrollmentNotification extends Notification
+class NewEnrollmentNotification extends Notification implements ShouldQueue
 {
     use Queueable;
 
@@ -35,8 +35,8 @@ class NewEnrollmentNotification extends Notification
     public function toMail(object $notifiable): MailMessage
     {
         return (new MailMessage)
-        ->from('welcome@example.com', 'Welcome')
-        ->subject('Welcome notification.')
+        ->from('MostafaArafa@example.com', 'Mostafa Arafa')
+        ->subject('Welcome to your new course.')
         ->greeting(sprintf('Hello %s!', $notifiable->name))
         ->line('Welcome to our app!');
     }
