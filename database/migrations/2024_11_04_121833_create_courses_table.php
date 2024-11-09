@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('title')->unique();
             $table->foreignId('instructor_id')->constrained('users')->onDelete('cascade');
+            $table->double('price');
             $table->softDeletes();
             $table->timestamps();
         });

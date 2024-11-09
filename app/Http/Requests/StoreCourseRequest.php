@@ -24,6 +24,7 @@ class StoreCourseRequest extends FormRequest
     {
         return [
             'title' => 'unique:courses|required',
+            'price' => 'required|numeric',
         ];
     }
 }

@@ -27,6 +27,7 @@ class CourseController extends Controller
             return Course::create([
                 'title' => $request->title,
                 'instructor_id' => Auth()->user()->id,
+                'price' =>$request->price,
             ]);
         }
         catch(Exception $e){

@@ -12,7 +12,8 @@ class Course extends Model
 
     protected $fillable =[
         'title',
-        'instructor_id'
+        'instructor_id',
+        'price',
     ];
 
     public function instructor(){

@@ -7,6 +7,8 @@ use App\Http\Requests\StoreEnrollmentRequest;
 use App\Http\Requests\UpdateEnrollmentRequest;
 use Illuminate\Support\Facades\Gate;
 use Exception   ;
+use Stripe\PaymentIntent;
+use Stripe\Stripe;
 
 class EnrollmentController extends Controller
 {
@@ -29,10 +31,17 @@ class EnrollmentController extends Controller
     public function store(StoreEnrollmentRequest $request)
     {
         try{
-            return Enrollment::create([
-                'user_id' => Auth()->user()->id,
-                'course_id' => $request->course_id,
-            ]);
+            Stripe::setApiKey(env('STRIPE_SECRET'));
+            $paymentIntent = PaymentIntent::retrieve($request->paymentIntentId);
+            if($paymentIntent->status==='succeeded'){
+                return Enrollment::create([
+                    'user_id' => Auth()->user()->id,
+                    'course_id' => $request->course_id,
+                ]);
+            }
+            else{
+                return response()->json('Payment failed');
+            }
         }
         catch(Exception $e){
             return $e->getMessage();
