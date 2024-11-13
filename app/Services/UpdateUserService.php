@@ -15,6 +15,7 @@ class UpdateUserService{
                 'name' => $request->name,
                 'email' => $request->email,
                 'password' => Hash::make($request->password),
+                'timezone' => $request->timezone,
             ]);
             $role = Role::where('name',$request->role)->first();
             $user->syncRoles($role);

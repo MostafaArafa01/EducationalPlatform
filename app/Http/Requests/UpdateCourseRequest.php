@@ -25,6 +25,7 @@ class UpdateCourseRequest extends FormRequest
         return [
             'title' => 'unique:courses,title,'.$this->course->id.'|required',
             'price' => 'required|numeric',
+            'type' => 'required|in:regular,live',
         ];
     }
 }

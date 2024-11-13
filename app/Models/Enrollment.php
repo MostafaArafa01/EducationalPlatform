@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Observers\EnrollmentObserver;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -29,5 +30,12 @@ class Enrollment extends Model
 
     public function completedLessons(){
         return $this->belongsToMany(Lesson::class);
+    }
+
+    public function getCreatedAtAttribute($value)
+    {
+
+        $timezone = $this->user->timezone ?? config('app.timezone');
+        return Carbon::parse($value)->setTimezone($timezone)->toDateTimeString();
     }
 }

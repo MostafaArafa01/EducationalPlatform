@@ -14,9 +14,14 @@ class PurchaseCourseController extends Controller
     public function __invoke(StoreEnrollmentRequest $request)
     {
         $course = Course::find($request->course_id);
-        $paymentIntent = $request->user()->pay($course->price*100);
-        return response()->json([
-            'clientSecret' => $paymentIntent->client_secret,
-        ]);
+        if($course->type == 'regular'){
+            $paymentIntent = $request->user()->pay($course->price*100);
+            return response()->json([
+                'clientSecret' => $paymentIntent->client_secret,
+            ]);
+        }
+        else{
+            return $request->user()->newSubscription('basic','price_1QIUWVLetA65yvrK0ILQdMky')->create($request->paymentMethod);
+        }
     }
 }

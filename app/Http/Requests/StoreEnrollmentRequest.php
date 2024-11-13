@@ -25,7 +25,8 @@ class StoreEnrollmentRequest extends FormRequest
     {
         return [
             'course_id' => 'required|exists:courses,id',
-            'paymentIntentId' => 'nullable'
+            'paymentIntentId' => 'nullable',
+            'paymentMethod' => 'nullable',
         ];
     }
 }

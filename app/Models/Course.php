@@ -14,6 +14,7 @@ class Course extends Model
         'title',
         'instructor_id',
         'price',
+        'type',
     ];
 
     public function instructor(){

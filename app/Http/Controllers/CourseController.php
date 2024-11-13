@@ -28,6 +28,7 @@ class CourseController extends Controller
                 'title' => $request->title,
                 'instructor_id' => Auth()->user()->id,
                 'price' =>$request->price,
+                'type' =>$request->type,
             ]);
         }
         catch(Exception $e){
